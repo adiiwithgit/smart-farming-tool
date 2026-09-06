@@ -136,6 +136,49 @@ document.getElementById("irrigation-btn").addEventListener("click", async () => 
   }
 });
 
+// ---------- Soil Health ----------
+document.getElementById("soil-health-btn").addEventListener("click", async () => {
+  const resultBox = document.getElementById("soil-health-result");
+  resultBox.className = "result-box";
+  resultBox.classList.remove("hidden");
+  resultBox.innerHTML = "Checking...";
+
+  const payload = {
+    temperature: parseFloat(document.getElementById("soil-temp").value),
+    humidity: parseFloat(document.getElementById("soil-humidity").value),
+    moisture: parseFloat(document.getElementById("soil-moisture-reading").value),
+    rainfall: parseFloat(document.getElementById("soil-rainfall").value),
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/soil-health`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+    const data = await res.json();
+
+    if (data.status === "error") {
+      resultBox.classList.add("danger");
+      resultBox.innerHTML = `⚠️ ${data.message}`;
+      return;
+    }
+
+    if (data.soil_health === "Poor") resultBox.classList.add("danger");
+    else if (data.soil_health === "Fair") resultBox.classList.add("warn");
+
+    resultBox.innerHTML = `
+      <strong>Soil Health:</strong> ${data.soil_health}<br/>
+      <strong>Confidence:</strong> ${data.confidence}%<br/>
+      ${data.advice}
+    `;
+  } catch (err) {
+    resultBox.classList.add("danger");
+    resultBox.innerHTML = `⚠️ Could not reach backend. (${err.message})`;
+  }
+});
+
 // ---------- Climate risk ----------
 document.getElementById("climate-btn").addEventListener("click", async () => {
   const resultBox = document.getElementById("climate-result");

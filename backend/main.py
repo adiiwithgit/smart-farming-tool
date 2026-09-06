@@ -1,7 +1,8 @@
 """
 Smart Farming Assistant - Backend
 Field-deployable AI assistant: crop disease/pest/nutrient detection from
-photos, plus weather-driven irrigation and climate-risk advisories.
+photos, weather-driven irrigation and climate-risk advisories, and a
+trained soil health classifier from sensor readings.
 """
 
 from dotenv import load_dotenv
@@ -17,11 +18,12 @@ import httpx
 
 from models.vision_model import diagnose_disease, detect_pest, detect_nutrient_deficiency
 from services.climate_rules import irrigation_advice, climate_risk_assessment
+from services.soil_model_service import predict_soil_health
 
 app = FastAPI(
     title="Smart Farming Assistant API",
-    description="Disease/pest/nutrient detection, irrigation and climate-risk advisories",
-    version="2.0.0",
+    description="Disease/pest/nutrient detection, irrigation, climate-risk, and soil health",
+    version="3.0.0",
 )
 
 app.add_middleware(
@@ -42,6 +44,13 @@ class IrrigationRequest(BaseModel):
 class ClimateRiskRequest(BaseModel):
     lat: float
     lon: float
+
+
+class SoilHealthRequest(BaseModel):
+    temperature: float
+    humidity: float
+    moisture: float
+    rainfall: float
 
 
 @app.get("/api/health")
@@ -145,6 +154,16 @@ async def get_climate_risk(req: ClimateRiskRequest):
         avg_precip_last_30d_mm=round(avg_precip_last_30d, 1),
     )
     return result
+
+
+@app.post("/api/soil-health")
+def get_soil_health(req: SoilHealthRequest):
+    return predict_soil_health(
+        temperature=req.temperature,
+        humidity=req.humidity,
+        moisture=req.moisture,
+        rainfall=req.rainfall,
+    )
 
 
 if __name__ == "__main__":

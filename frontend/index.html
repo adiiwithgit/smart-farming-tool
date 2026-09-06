@@ -52,6 +52,26 @@
     <div id="climate-result" class="result-box hidden"></div>
   </section>
 
+  <!-- Soil Health -->
+  <section class="card">
+    <h2>4. Soil Health Check</h2>
+    <p class="subtext">Trained model — enter current sensor readings.</p>
+    <label>Temperature (°C)
+      <input type="number" id="soil-temp" value="28" />
+    </label>
+    <label>Humidity (%)
+      <input type="number" id="soil-humidity" value="60" />
+    </label>
+    <label>Moisture (%)
+      <input type="number" id="soil-moisture-reading" value="45" />
+    </label>
+    <label>Recent Rainfall (mm)
+      <input type="number" id="soil-rainfall" value="10" />
+    </label>
+    <button id="soil-health-btn">Check Soil Health</button>
+    <div id="soil-health-result" class="result-box hidden"></div>
+  </section>
+
 </main>
 
 <footer>
