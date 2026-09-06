@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Farming Assistant</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <h1>🌾 Smart Farming Assistant</h1>
+  <p>Field-deployable AI for early crop threat detection and climate resilience</p>
+</header>
+
+<main>
+
+  <!-- Diagnose -->
+  <section class="card">
+    <h2>1. Diagnose from a Photo</h2>
+    <p class="subtext">Upload a clear photo of the affected leaf or plant.</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="disease">Disease</button>
+      <button class="tab-btn" data-tab="pest">Pest</button>
+      <button class="tab-btn" data-tab="nutrient">Nutrient Deficiency</button>
+    </div>
+
+    <input type="file" id="image-input" accept="image/jpeg,image/png,image/webp" />
+    <img id="image-preview" class="hidden" />
+    <button id="diagnose-btn">Diagnose</button>
+
+    <div id="diagnose-result" class="result-box hidden"></div>
+  </section>
+
+  <!-- Irrigation -->
+  <section class="card">
+    <h2>2. Irrigation Advisor</h2>
+    <p class="subtext">Uses your location's live weather + your soil moisture reading.</p>
+    <label>Soil moisture (%)
+      <input type="number" id="soil-moisture" value="35" min="0" max="100" />
+    </label>
+    <button id="irrigation-btn">Get Irrigation Advice</button>
+    <div id="irrigation-result" class="result-box hidden"></div>
+  </section>
+
+  <!-- Climate risk -->
+  <section class="card">
+    <h2>3. Climate Risk Check</h2>
+    <p class="subtext">Flags drought, flood, and heatwave risk from live forecast data.</p>
+    <button id="climate-btn">Check Climate Risk</button>
+    <div id="climate-result" class="result-box hidden"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Built for GDG Hackathon — Smart Farming Assistant</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
